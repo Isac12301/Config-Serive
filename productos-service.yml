@@ -1,0 +1,31 @@
+server:
+  port: 8100
+
+# Configuración de la conexión a la base de datos de Azure.
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_NETSHOP;encrypt=true;trustServerCertificate=false;loginTimeout=30;
+    username: netcompany
+    password: "@Isac922024126" # Es mejor práctica manejar esto con Spring Cloud Vault o Azure Key Vault.
+  jpa:
+    hibernate:
+      ddl-auto: update # 'update' está bien para desarrollo, considera 'validate' para producción.
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.SQLServerDialect
+  hikari:
+    maximum-pool-size: 10
+    minimum-idle: 2
+    idle-timeout: 30000
+    connection-timeout: 30000
+    pool-name: HikariPool-NetShop
+
+# Configuración para que este servicio se registre en Eureka.
+eureka:
+  client:
+    serviceUrl:
+      # Dirección donde está corriendo tu servidor Eureka.
+      defaultZone: http://localhost:8761/eureka/
