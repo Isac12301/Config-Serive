@@ -10,7 +10,7 @@ spring:
     password: "@Isac922024126" # Es mejor práctica manejar esto con Spring Cloud Vault o Azure Key Vault.
   jpa:
     hibernate:
-      ddl-auto: update # 'update' está bien para desarrollo, considera 'validate' para producción.
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
