@@ -16,15 +16,11 @@ spring:
           uri: lb://productos-service
           predicates:
             - Path=/productos/**
-          filters:
-          #- JwtAuthFilter
-
-        # Rutas públicas (login, registro, etc.)
+        # Ruta pública (login, registro)
         - id: auth-service
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
-
 eureka:
   client:
     service-url:
