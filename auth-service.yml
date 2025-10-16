@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update   # ⚠️ Cambiar a 'validate' o 'none' en producción
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
