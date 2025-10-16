@@ -11,29 +11,21 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        # 🔹 RUTA para PRODUCTOS
+        # Ruta para productos
         - id: productos-service
           uri: lb://productos-service
           predicates:
             - Path=/api/productos/**
-          filters:
-            - StripPrefix=1
 
-        # 🔹 RUTA para CATEGORIAS
         - id: categorias-service
           uri: lb://productos-service
           predicates:
             - Path=/api/categorias/**
-          filters:
-            - StripPrefix=1
-
-        # 🔹  RUTA para AUTH
+        # Ruta pública (login, registro)
         - id: auth-service
           uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
-          filters:
-            - StripPrefix=1
 eureka:
   client:
     service-url:
