@@ -2,9 +2,6 @@ server:
   port: 8090
 
 spring:
-  application:
-    name: auth-service
-
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;databaseName=DB_Auth;encrypt=true;trustServerCertificate=false;loginTimeout=30;
