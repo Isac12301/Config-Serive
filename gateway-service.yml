@@ -16,6 +16,11 @@ spring:
           uri: lb://productos-service
           predicates:
             - Path=/productos/**
+
+        - id: categorias-service
+          uri: lb://productos-service
+          predicates:
+            - Path=/api/categorias/**
         # Ruta pública (login, registro)
         - id: auth-service
           uri: lb://auth-service
