@@ -2,8 +2,6 @@ server:
   port: 8080
 
 spring:
-  application:
-    name: gateway-service
   cloud:
     gateway:
       discovery:
@@ -22,7 +20,7 @@ spring:
             - Path=/api/categorias/**
 
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://identity-service
           predicates:
             - Path=/api/auth/**
           filters:
@@ -32,3 +30,5 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true

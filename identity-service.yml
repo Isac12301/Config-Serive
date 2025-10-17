@@ -1,9 +1,8 @@
 server:
-  port: 9000 # Puerto estándar para un servicio de identidad
+  port: 9000
 
 spring:
   datasource:
-    # Usamos las mismas credenciales que ya tienes
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=DB_Identity;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
     password: "@Isac922024126"
@@ -17,16 +16,13 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
 
-# Configuración para registrarse en Eureka
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
 
-# --- SECCIÓN CLAVE PARA JWT ---
-# Aquí definimos las propiedades para generar los tokens.
 jwt:
-  # ¡¡IMPORTANTE!! Esta debe ser EXACTAMENTE la misma clave secreta que tienes en tu API Gateway.
   secret: "claveSuperSecretaParaGenerarTokensSegurosDeNetShop123456"
-  # Tiempo de expiración del token en milisegundos (ej. 24 horas)
   expiration: 86400000
