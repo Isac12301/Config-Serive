@@ -2,9 +2,6 @@ server:
   port: 8110
 
 spring:
-  application:
-    name: usuario-service  # 🔹 Asegura que el nombre sea igual en Eureka y en el Config Server
-
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=DB_Usuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
@@ -27,12 +24,6 @@ spring:
     connection-timeout: 30000
     pool-name: HikariPool-NetShop
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-
 eureka:
   client:
     service-url:
@@ -40,7 +31,3 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-  # 🔹 Opcional pero útil: información del servicio para el panel de Eureka
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
