@@ -19,7 +19,7 @@ spring:
           predicates:
             - Path=/api/categorias/**
 
-        - id: auth-service
+        - id: identity-service
           uri: lb://identity-service
           predicates:
             - Path=/api/auth/**
