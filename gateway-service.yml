@@ -48,7 +48,6 @@ spring:
             - Path=/api/ventas/**
           filters:
             - JwtAuthenticationFilter
-
 eureka:
   client:
     service-url:
