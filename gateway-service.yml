@@ -42,6 +42,13 @@ spring:
           filters:
             - StripPrefix=1
 
+        - id: ventas-service
+          uri: lb://ventas-service
+          predicates:
+            - Path=/api/ventas/**
+          filters:
+            - JwtAuthenticationFilter
+
 eureka:
   client:
     service-url:
