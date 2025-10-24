@@ -28,10 +28,6 @@ spring:
               - profile
               - email
             client-authentication-method: client_secret_basic
-            authorization-grant-type: authorization_code
-            # ¡CAMBIO CRÍTICO AQUÍ!
-            # La URL de redirección que Google debe usar DEBE ser accesible desde el navegador del usuario.
-            # Esto significa a través del Gateway.
             redirect-uri: http://localhost:8081/login/oauth2/code/google # <--- ¡CÁMBIALO A 8081!
 
         provider:
