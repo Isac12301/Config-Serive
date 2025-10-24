@@ -18,7 +18,7 @@ spring:
   hikari:
     pool-name: HikariPool-Ventas
   rabbitmq:
-    host: rabbitmq # Usa el nombre del servicio de Docker Compose aquí
+    host: rabbitmq
     port: 5672
     username: guest
     password: guest
