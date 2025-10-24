@@ -1,3 +1,4 @@
+# api-gateway.yml (EN TU REPOSITORIO GIT DEL CONFIG SERVER)
 server:
   port: 8080 # Puerto interno del contenedor del Gateway
 
@@ -27,13 +28,27 @@ spring:
           filters:
             - StripPrefix=1
 
-        # Identity - Corregido para Postman
+        # Identity - Autenticación manual (registro, login)
         - id: identity-service
           uri: lb://IDENTITY-SERVICE # Usar el nombre de Eureka en mayúsculas
           predicates:
             - Path=/identity/auth/** # Coincide con /identity/auth/login
           filters:
             - StripPrefix=1 # Elimina '/identity' antes de enviar a IDENTITY-SERVICE
+
+        # ¡NUEVA RUTA PARA INICIAR EL FLUJO DE GOOGLE OAUTH2!
+        - id: google-oauth2-init
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/oauth2/authorization/google # La URL para iniciar el login de Google
+          # No necesitamos StripPrefix aquí si la URL en Identity Service es exactamente esa.
+
+        # ¡NUEVA RUTA PARA EL CALLBACK DE GOOGLE OAUTH2!
+        # Google redirige a /login/oauth2/code/google, y el Gateway debe reenviarlo.
+        - id: google-oauth2-callback
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/login/oauth2/code/google
 
         # Perfiles de Usuario (Ruta actualizada para el nuevo PerfilUsuarioController)
         - id: perfiles-usuario-service
@@ -49,10 +64,11 @@ spring:
             - Path=/api/ventas/**
           filters:
             - StripPrefix=1
+jwt:
+  secret: "${JWT_SECRET}" # Si el Gateway necesita este secreto para validar tokens (asegúrate de que lo lee del .env via docker-compose)
 eureka:
   client:
     service-url:
-      # Esta configuración debería ser sobreescrita por la variable de entorno en docker-compose.yml
       defaultZone: http://eureka-server:8761/eureka
     register-with-eureka: true
     fetch-registry: true
