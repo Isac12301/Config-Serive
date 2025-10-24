@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_Usuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    password: "@Isac922024126"
+    password: "{cipher}AQAmj72Sg2..." # ¡Encriptado! O simplemente el valor plano si confías en la seguridad de tu repo
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
@@ -16,6 +16,25 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: "477841002869-tgboj72vbdcrrnk27r22d5kgfll3slom.apps.googleusercontent.com" # Valor directo
+            client-secret: "{cipher}AQAo6p7Sj7..." # ¡Encriptado!
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+            user-name-attribute: email
+
 eureka:
   client:
     service-url:
@@ -24,5 +43,8 @@ eureka:
     fetch-registry: true
 
 jwt:
-  secret: "claveSuperSecretaParaGenerarTokensSegurosDeNetShop123456"
+  secret: "claveSuperSecretaParaGenerarTokensSegurosDeNetShop1234567890abcdefghijklmnopqrstuvwxyz" # Asegúrate de que esta sea LAAAAARGA
   expiration: 86400000
+
+frontend:
+  redirect-url: "http://localhost:4200/oauth2/redirect"

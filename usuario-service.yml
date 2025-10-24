@@ -1,16 +1,18 @@
 server:
   port: 8110
+  application:
+    name: usuario-service
 
 spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_Usuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    password: "@Isac922024126"
+    password: "{cipher}AQAmj72Sg2..."
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -31,4 +33,10 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
