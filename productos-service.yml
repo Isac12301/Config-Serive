@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=DB_Productos;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    password: "{cipher}AQAmj72Sg2..."
+    # ¡CONTRASEÑA ELIMINADA! Se inyecta desde docker-compose.yml como DB_PASSWORD
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
@@ -25,7 +25,8 @@ spring:
     pool-name: HikariPool-NetShop
 
   rabbitmq:
-    host: localhost
+    # Estas credenciales pueden quedar aquí o ser variables de entorno si quieres más control
+    host: rabbitmq # Usa el nombre del servicio de Docker Compose aquí
     port: 5672
     username: guest
     password: guest

@@ -17,7 +17,7 @@ spring:
           predicates:
             - Path=/api/productos/**
           filters:
-            - StripPrefix=1 # Elimina '/api'
+            - StripPrefix=1
 
         # Categorias (Parte de Productos, rutea al mismo servicio)
         - id: categorias-service
@@ -25,7 +25,7 @@ spring:
           predicates:
             - Path=/api/categorias/**
           filters:
-            - StripPrefix=1 # Elimina '/api'
+            - StripPrefix=1
 
         # Identity - Corregido para Postman
         - id: identity-service
@@ -35,13 +35,13 @@ spring:
           filters:
             - StripPrefix=1 # Elimina '/identity' antes de enviar a IDENTITY-SERVICE
 
-        # Usuarios
-        - id: usuario-service
-          uri: lb://USUARIO-SERVICE # Usar el nombre de Eureka en mayúsculas
+        # Perfiles de Usuario (Ruta actualizada para el nuevo PerfilUsuarioController)
+        - id: perfiles-usuario-service # Un nuevo ID para la ruta
+          uri: lb://USUARIO-SERVICE # Apunta al nombre del servicio de Eureka
           predicates:
-            - Path=/api/usuarios/**
+            - Path=/api/perfiles-usuario/** # La ruta que usará el frontend
           filters:
-            - StripPrefix=1
+            - StripPrefix=1 # Elimina '/api'
 
         - id: ventas-service
           uri: lb://VENTAS-SERVICE
