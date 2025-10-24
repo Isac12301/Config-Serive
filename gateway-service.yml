@@ -1,10 +1,9 @@
-# api-gateway.yml (EN TU REPOSITORIO GIT DEL CONFIG SERVER)
 server:
-  port: 8080
+  port: 8080 # Puerto interno del Gateway dentro del contenedor
 
 spring:
   application:
-    name: api-gateway
+    name: api-gateway # Nombre del servicio para Eureka
   cloud:
     gateway:
       discovery:
@@ -13,64 +12,61 @@ spring:
           lower-case-service-id: true
       routes:
         # Productos
-        - id: productos-service-direct
-          uri: http://productos-service:8100
+        - id: productos-service
+          uri: lb://PRODUCTOS-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
           predicates:
             - Path=/api/productos/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2 # Elimina /api/productos del path antes de enviar al microservicio
 
         # Categorias
-        - id: productos-service-direct
-          uri: http://productos-service:8100
+        - id: categorias-service
+          uri: lb://PRODUCTOS-SERVICE # Las categorías probablemente están en el mismo servicio de productos
           predicates:
             - Path=/api/categorias/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2 # Elimina /api/categorias del path
 
         # Identity - Autenticación manual (registro, login)
         - id: identity-service
-          uri: lb://identity-service
+          uri: lb://IDENTITY-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
           predicates:
             - Path=/auth/**
-            - Path=/oauth2/**
-            - Path=/login/oauth2/code/** # Esta es la ruta para la redirección de Google
           filters:
-            - StripPrefix=0 # Crucial para OAuth2
+            - StripPrefix=1 # Elimina /auth del path
 
-        # ¡NUEVA RUTA PARA INICIAR EL FLUJO DE GOOGLE OAUTH2!
-        - id: google-oauth2-init
+        # Rutas OAuth2 (importante que se enruten correctamente al Identity Service)
+        - id: oauth2-authorization-google # Ruta para iniciar el flujo de Google OAuth2
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/oauth2/authorization/google
           filters:
-            - StripPrefix=0 # <--- ¡AGREGADO! Pasa la ruta tal cual
+            - StripPrefix=0 # Pasa la ruta tal cual al Identity Service
 
-        # ¡NUEVA RUTA PARA EL CALLBACK DE GOOGLE OAUTH2!
-        - id: google-oauth2-callback
+        - id: oauth2-callback-google # Ruta para el callback de Google OAuth2
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/login/oauth2/code/google
           filters:
-            - StripPrefix=0 # <--- ¡AGREGADO! Pasa la ruta tal cual
+            - StripPrefix=0 # Pasa la ruta tal cual al Identity Service
 
         # Perfiles de Usuario
         - id: perfiles-usuario-service
-          uri: lb://USUARIO-SERVICE
+          uri: lb://USUARIO-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
           predicates:
             - Path=/api/perfiles-usuario/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2 # Elimina /api/perfiles-usuario del path
 
         # Ventas Service
         - id: ventas-service
-          uri: lb://VENTAS-SERVICE
+          uri: lb://VENTAS-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
           predicates:
             - Path=/api/ventas/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2 # Elimina /api/ventas del path
 
-#jwt: # Mantén esto comentado si lo inyectas vía Docker Compose
+#jwt: # Mantén esto comentado si lo inyectas vía Docker Compose (que es lo que estás haciendo)
 #  secret: "${JWT_SECRET}"
 eureka:
   client:
