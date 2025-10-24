@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8080 # Puerto interno del contenedor del Gateway
 
 spring:
   application:
@@ -13,44 +13,47 @@ spring:
       routes:
         # Productos
         - id: productos-service
-          uri: lb://productos-service
+          uri: lb://PRODUCTOS-SERVICE # Usar el nombre de Eureka en mayúsculas
           predicates:
             - Path=/api/productos/**
           filters:
-            - StripPrefix=1
-        #Caategorias(Productos)
+            - StripPrefix=1 # Elimina '/api'
+
+        # Categorias (Parte de Productos, rutea al mismo servicio)
         - id: categorias-service
-          uri: lb://productos-service
+          uri: lb://PRODUCTOS-SERVICE # Usar el nombre de Eureka en mayúsculas
           predicates:
             - Path=/api/categorias/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=1 # Elimina '/api'
 
-        # Identity
+        # Identity - Corregido para Postman
         - id: identity-service
-          uri: lb://identity-service
+          uri: lb://IDENTITY-SERVICE # Usar el nombre de Eureka en mayúsculas
           predicates:
-            - Path=/api/auth/**
+            - Path=/identity/auth/** # Coincide con /identity/auth/login
           filters:
-            - StripPrefix=1
+            - StripPrefix=1 # Elimina '/identity' antes de enviar a IDENTITY-SERVICE
 
         # Usuarios
         - id: usuario-service
-          uri: lb://usuario-service
+          uri: lb://USUARIO-SERVICE # Usar el nombre de Eureka en mayúsculas
           predicates:
             - Path=/api/usuarios/**
           filters:
             - StripPrefix=1
 
         - id: ventas-service
-          uri: lb://ventas-service
+          uri: lb://VENTAS-SERVICE
           predicates:
             - Path=/api/ventas/**
           filters:
-            - JwtAuthenticationFilter
+            - StripPrefix=1
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      # Esta configuración debería ser sobreescrita por la variable de entorno en docker-compose.yml
+      # Pero si no, asegúrate de que esté configurada para el entorno Docker
+      defaultZone: http://eureka-server:8761/eureka
     register-with-eureka: true
     fetch-registry: true
