@@ -12,46 +12,63 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        # ... (tus rutas existentes) ...
+        # Productos
         - id: productos-service
           uri: lb://PRODUCTOS-SERVICE
           predicates:
             - Path=/api/productos/**
           filters:
             - StripPrefix=1
+
+        # Categorias
         - id: categorias-service
           uri: lb://PRODUCTOS-SERVICE
           predicates:
             - Path=/api/categorias/**
           filters:
             - StripPrefix=1
+
+        # Identity - Autenticación manual (registro, login)
         - id: identity-service
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/identity/auth/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=1 # Elimina '/identity'
+
+        # ¡NUEVA RUTA PARA INICIAR EL FLUJO DE GOOGLE OAUTH2!
         - id: google-oauth2-init
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/oauth2/authorization/google
+          filters:
+            - StripPrefix=0 # <--- ¡AGREGADO! Pasa la ruta tal cual
+
+        # ¡NUEVA RUTA PARA EL CALLBACK DE GOOGLE OAUTH2!
         - id: google-oauth2-callback
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/login/oauth2/code/google
+          filters:
+            - StripPrefix=0 # <--- ¡AGREGADO! Pasa la ruta tal cual
+
+        # Perfiles de Usuario
         - id: perfiles-usuario-service
           uri: lb://USUARIO-SERVICE
           predicates:
             - Path=/api/perfiles-usuario/**
           filters:
             - StripPrefix=1
+
+        # Ventas Service
         - id: ventas-service
           uri: lb://VENTAS-SERVICE
           predicates:
             - Path=/api/ventas/**
           filters:
             - StripPrefix=1
-#jwt: # <--- COMENTA O ELIMINA ESTO SI EL JWT_SECRET LO OBTIENE DEL .env VIA DOCKER COMPOSE
+
+#jwt: # Mantén esto comentado si lo inyectas vía Docker Compose
 #  secret: "${JWT_SECRET}"
 eureka:
   client:
