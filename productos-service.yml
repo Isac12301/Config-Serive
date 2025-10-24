@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=DB_Productos;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    # ¡CONTRASEÑA ELIMINADA! Se inyecta desde docker-compose.yml como DB_PASSWORD
+    # ¡LA CONTRASEÑA YA NO ESTÁ AQUÍ! Se inyecta desde docker-compose.yml como DB_PASSWORD
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
@@ -25,13 +25,11 @@ spring:
     pool-name: HikariPool-NetShop
 
   rabbitmq:
-    # Estas credenciales pueden quedar aquí o ser variables de entorno si quieres más control
-    host: rabbitmq # Usa el nombre del servicio de Docker Compose aquí
+    host: rabbitmq
     port: 5672
     username: guest
     password: guest
 
-# Configuración de Eureka
 eureka:
   client:
     service-url:
@@ -39,9 +37,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-
-# 🧩 Variables personalizadas para tus colas y bindings de RabbitMQ
-rabbitmq:
+rabbitmq: # 🧩 Variables personalizadas para tus colas y bindings de RabbitMQ
   exchange: netshop.exchange
   queue:
     ventas: netshop.ventas.queue

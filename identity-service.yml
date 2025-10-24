@@ -5,7 +5,8 @@ spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_Usuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    # ¡CONTRASEÑA ELIMINADA! Se inyecta desde docker-compose.yml como DB_PASSWORD
+    # ¡LA CONTRASEÑA, CLIENT_ID, CLIENT_SECRET YA NO ESTÁN AQUÍ!
+    # Se inyectan como variables de entorno en docker-compose.yml
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
@@ -21,7 +22,7 @@ spring:
       client:
         registration:
           google:
-            # ¡CLIENT_ID y CLIENT_SECRET ELIMINADOS! Se inyectan desde docker-compose.yml
+            # client-id y client-secret se obtienen de las variables de entorno
             scope:
               - openid
               - profile
@@ -42,8 +43,8 @@ eureka:
     fetch-registry: true
 
 jwt:
-  # ¡JWT_SECRET ELIMINADO! Se inyecta desde docker-compose.yml
+  # jwt.secret se obtiene de la variable de entorno
   expiration: 86400000
 
 frontend:
-# ¡FRONTEND_REDIRECT_URL ELIMINADO! Se inyecta desde docker-compose.yml
+# frontend.redirect-url se obtiene de la variable de entorno

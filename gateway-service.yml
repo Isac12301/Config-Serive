@@ -36,12 +36,12 @@ spring:
             - StripPrefix=1 # Elimina '/identity' antes de enviar a IDENTITY-SERVICE
 
         # Perfiles de Usuario (Ruta actualizada para el nuevo PerfilUsuarioController)
-        - id: perfiles-usuario-service # Un nuevo ID para la ruta
+        - id: perfiles-usuario-service
           uri: lb://USUARIO-SERVICE # Apunta al nombre del servicio de Eureka
           predicates:
-            - Path=/api/perfiles-usuario/** # La ruta que usará el frontend
+            - Path=/api/perfiles-usuario/**
           filters:
-            - StripPrefix=1 # Elimina '/api'
+            - StripPrefix=1
 
         - id: ventas-service
           uri: lb://VENTAS-SERVICE
@@ -53,7 +53,6 @@ eureka:
   client:
     service-url:
       # Esta configuración debería ser sobreescrita por la variable de entorno en docker-compose.yml
-      # Pero si no, asegúrate de que esté configurada para el entorno Docker
       defaultZone: http://eureka-server:8761/eureka
     register-with-eureka: true
     fetch-registry: true
