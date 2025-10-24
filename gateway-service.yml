@@ -1,6 +1,6 @@
 # api-gateway.yml (EN TU REPOSITORIO GIT DEL CONFIG SERVER)
 server:
-  port: 8080 # Puerto interno del contenedor del Gateway
+  port: 8080
 
 spring:
   application:
@@ -12,60 +12,47 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        # Productos
+        # ... (tus rutas existentes) ...
         - id: productos-service
-          uri: lb://PRODUCTOS-SERVICE # Usar el nombre de Eureka en mayúsculas
+          uri: lb://PRODUCTOS-SERVICE
           predicates:
             - Path=/api/productos/**
           filters:
             - StripPrefix=1
-
-        # Categorias (Parte de Productos, rutea al mismo servicio)
         - id: categorias-service
-          uri: lb://PRODUCTOS-SERVICE # Usar el nombre de Eureka en mayúsculas
+          uri: lb://PRODUCTOS-SERVICE
           predicates:
             - Path=/api/categorias/**
           filters:
             - StripPrefix=1
-
-        # Identity - Autenticación manual (registro, login)
         - id: identity-service
-          uri: lb://IDENTITY-SERVICE # Usar el nombre de Eureka en mayúsculas
+          uri: lb://IDENTITY-SERVICE
           predicates:
-            - Path=/identity/auth/** # Coincide con /identity/auth/login
+            - Path=/identity/auth/**
           filters:
-            - StripPrefix=1 # Elimina '/identity' antes de enviar a IDENTITY-SERVICE
-
-        # ¡NUEVA RUTA PARA INICIAR EL FLUJO DE GOOGLE OAUTH2!
+            - StripPrefix=1
         - id: google-oauth2-init
           uri: lb://IDENTITY-SERVICE
           predicates:
-            - Path=/oauth2/authorization/google # La URL para iniciar el login de Google
-          # No necesitamos StripPrefix aquí si la URL en Identity Service es exactamente esa.
-
-        # ¡NUEVA RUTA PARA EL CALLBACK DE GOOGLE OAUTH2!
-        # Google redirige a /login/oauth2/code/google, y el Gateway debe reenviarlo.
+            - Path=/oauth2/authorization/google
         - id: google-oauth2-callback
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/login/oauth2/code/google
-
-        # Perfiles de Usuario (Ruta actualizada para el nuevo PerfilUsuarioController)
         - id: perfiles-usuario-service
-          uri: lb://USUARIO-SERVICE # Apunta al nombre del servicio de Eureka
+          uri: lb://USUARIO-SERVICE
           predicates:
             - Path=/api/perfiles-usuario/**
           filters:
             - StripPrefix=1
-
         - id: ventas-service
           uri: lb://VENTAS-SERVICE
           predicates:
             - Path=/api/ventas/**
           filters:
             - StripPrefix=1
-jwt:
-  secret: "${JWT_SECRET}" # Si el Gateway necesita este secreto para validar tokens (asegúrate de que lo lee del .env via docker-compose)
+#jwt: # <--- COMENTA O ELIMINA ESTO SI EL JWT_SECRET LO OBTIENE DEL .env VIA DOCKER COMPOSE
+#  secret: "${JWT_SECRET}"
 eureka:
   client:
     service-url:
