@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ventas-service # Asegúrate de que este nombre esté presente para Eureka/Feign
+    name: ventas-service
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=DB_Ventas;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
@@ -11,14 +11,14 @@ spring:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update # Cambia a 'validate' o 'none' en producción
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
   hikari:
     pool-name: HikariPool-Ventas
   rabbitmq:
-    host: localhost
+    host: rabbitmq # Usa el nombre del servicio de Docker Compose aquí
     port: 5672
     username: guest
     password: guest
@@ -27,4 +27,4 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka # Usa el nombre del servicio de Docker Compose aquí
