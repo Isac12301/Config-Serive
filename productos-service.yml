@@ -2,6 +2,8 @@ server:
   port: 8100
 
 spring:
+  application:
+    name: productos-service
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=DB_Productos;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
@@ -37,7 +39,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-rabbitmq: # 🧩 Variables personalizadas para tus colas y bindings de RabbitMQ
+rabbitmq: # Variables personalizadas para tus colas y bindings de RabbitMQ
   exchange: netshop.exchange
   queue:
     ventas: netshop.ventas.queue
