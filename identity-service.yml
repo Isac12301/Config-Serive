@@ -1,3 +1,4 @@
+# identity-service.yml (EN TU REPOSITORIO GIT DEL CONFIG SERVER)
 server:
   port: 9000
 
@@ -5,7 +6,6 @@ spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_Usuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    password: "${DB_PASSWORD}"
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
@@ -21,12 +21,13 @@ spring:
       client:
         registration:
           google:
-            client-id: "${GOOGLE_CLIENT_ID}"
-            client-secret: "${GOOGLE_CLIENT_SECRET}"
             scope:
               - openid
               - profile
               - email
+            # ¡AGREGA ESTAS DOS LÍNEAS!
+            client-authentication-method: client_secret_basic
+            authorization-grant-type: authorization_code
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/auth
@@ -43,8 +44,6 @@ eureka:
     fetch-registry: true
 
 jwt:
-  secret: "${JWT_SECRET}"
   expiration: 86400000
 
 frontend:
-  redirect-url: "${FRONTEND_REDIRECT_URL}"
