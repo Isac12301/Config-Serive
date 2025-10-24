@@ -30,11 +30,13 @@ spring:
 
         # Identity - Autenticación manual (registro, login)
         - id: identity-service
-          uri: lb://IDENTITY-SERVICE
+          uri: lb://identity-service
           predicates:
-            - Path=/identity/auth/**
+            - Path=/auth/**
+            - Path=/oauth2/**
+            - Path=/login/oauth2/code/** # Esta es la ruta para la redirección de Google
           filters:
-            - StripPrefix=1 # Elimina '/identity'
+            - StripPrefix=0 # Crucial para OAuth2
 
         # ¡NUEVA RUTA PARA INICIAR EL FLUJO DE GOOGLE OAUTH2!
         - id: google-oauth2-init
