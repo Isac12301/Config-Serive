@@ -13,16 +13,16 @@ spring:
           lower-case-service-id: true
       routes:
         # Productos
-        - id: productos-service
-          uri: lb://PRODUCTOS-SERVICE
+        - id: productos-service-direct
+          uri: http://productos-service:8100
           predicates:
             - Path=/api/productos/**
           filters:
             - StripPrefix=1
 
         # Categorias
-        - id: categorias-service
-          uri: lb://PRODUCTOS-SERVICE
+        - id: productos-service-direct
+          uri: http://productos-service:8100
           predicates:
             - Path=/api/categorias/**
           filters:
