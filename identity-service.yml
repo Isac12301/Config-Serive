@@ -2,8 +2,6 @@ server:
   port: 9000
 
 spring:
-  application:
-    name: identity-service # <-- ¡Añadido!
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_Usuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
@@ -31,8 +29,10 @@ spring:
               - email
             client-authentication-method: client_secret_basic
             authorization-grant-type: authorization_code
+            # ¡CAMBIO CRÍTICO AQUÍ!
+            # La URL de redirección que Google debe usar DEBE ser accesible desde el navegador del usuario.
+            # Esto significa a través del Gateway.
             redirect-uri: http://localhost:8081/login/oauth2/code/google # <--- ¡CÁMBIALO A 8081!
-            # Asegúrate de que esta URL esté registrada en tu consola de Google Cloud
 
         provider:
           google:
