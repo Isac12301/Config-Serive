@@ -1,11 +1,11 @@
-# identity-service.yml (EN GIT)
 server:
-  port: 9000
+  port: 9000 # Puerto interno del servicio
 spring:
+  application:
+    name: identity-service
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_Usuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    # ¡NO HAY PASSWORD AQUÍ! Se obtiene de la variable de entorno del contenedor.
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
@@ -20,7 +20,6 @@ spring:
       client:
         registration:
           google:
-            # ¡ESTO DEBE ESTAR AQUÍ SI LO QUIERES CENTRALIZADO!
             client-id: "${GOOGLE_CLIENT_ID}"
             client-secret: "${GOOGLE_CLIENT_SECRET}"
             scope:

@@ -17,19 +17,19 @@ spring:
           predicates:
             - Path=/api/productos/**
           filters:
-            - StripPrefix=2 # Elimina /api/productos del path antes de enviar al microservicio
+            - StripPrefix=2
 
-        # Categorias
+        # Categorias (Asumiendo que están en el mismo servicio de productos)
         - id: categorias-service
-          uri: lb://PRODUCTOS-SERVICE # Las categorías probablemente están en el mismo servicio de productos
+          uri: lb://PRODUCTOS-SERVICE
           predicates:
             - Path=/api/categorias/**
           filters:
             - StripPrefix=2 # Elimina /api/categorias del path
 
         # Identity - Autenticación manual (registro, login)
-        - id: identity-service
-          uri: lb://IDENTITY-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
+        - id: identity-service-auth
+          uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/auth/**
           filters:
@@ -66,8 +66,10 @@ spring:
           filters:
             - StripPrefix=2 # Elimina /api/ventas del path
 
-#jwt: # Mantén esto comentado si lo inyectas vía Docker Compose (que es lo que estás haciendo)
-#  secret: "${JWT_SECRET}"
+jwt: # JWT_SECRET se inyecta como variable de entorno en docker-compose.yml
+  secret: "${JWT_SECRET}"
+  # Aquí puedes añadir expiration si no lo haces en identity-service o si necesitas una diferente para el gateway
+  # expiration: 3600 # Ejemplo: 1 hora
 eureka:
   client:
     service-url:
