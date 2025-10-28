@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_NetUsuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    # DB_PASSWORD se inyecta desde docker-compose
+    password: "@Isac922024126"
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:

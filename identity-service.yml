@@ -1,12 +1,15 @@
 server:
   port: 9000 # Puerto interno del servicio
+
 spring:
   application:
     name: identity-service
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_NetUsuarios;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
+    password: "@Isac922024126"
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    # DB_PASSWORD se inyecta desde el docker-compose.yml
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,8 +23,7 @@ spring:
       client:
         registration:
           google:
-            client-id: "${GOOGLE_CLIENT_ID}"
-            client-secret: "${GOOGLE_CLIENT_SECRET}"
+            # GOOGLE_CLIENT_ID y GOOGLE_CLIENT_SECRET se inyectan desde docker-compose
             scope:
               - openid
               - profile
@@ -42,8 +44,3 @@ eureka:
       defaultZone: http://eureka-server:8761/eureka
     register-with-eureka: true
     fetch-registry: true
-jwt:
-  secret: "${JWT_SECRET}"
-  expiration: 86400000
-frontend:
-  redirect-url: "${FRONTEND_REDIRECT_URL}"
