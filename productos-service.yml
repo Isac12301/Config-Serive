@@ -5,7 +5,7 @@ spring:
   application:
     name: productos-service
   datasource:
-    url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=DB_Productos;encrypt=true;trustServerCertificate=false;loginTimeout=30;
+    url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_NetProductos;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 

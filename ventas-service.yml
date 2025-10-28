@@ -5,7 +5,7 @@ spring:
   application:
     name: ventas-service
   datasource:
-    url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_Ventas;encrypt=true;trustServerCertificate=false;loginTimeout=30;
+    url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_NetVentas;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
     # DB_PASSWORD se inyecta como variable de entorno
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
