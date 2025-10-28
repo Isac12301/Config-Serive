@@ -1,5 +1,5 @@
 server:
-  port: 8100
+  port: 8082
 
 spring:
   application:
@@ -8,7 +8,7 @@ spring:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_NetProductos;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-
+    # DB_PASSWORD se inyecta desde docker-compose
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,16 +17,14 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
-
   hikari:
     maximum-pool-size: 10
     minimum-idle: 2
     idle-timeout: 30000
     connection-timeout: 30000
     pool-name: HikariPool-NetShop
-
   rabbitmq:
-    host: rabbitmq
+    host: rabbitmq # Usar el nombre del servicio de Docker Compose
     port: 5672
     username: guest
     password: guest
@@ -38,7 +36,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-rabbitmq: # Variables personalizadas para tus colas y bindings de RabbitMQ
+rabbitmq: # Variables personalizadas para tus colas
   exchange: netshop.exchange
   queue:
     ventas: netshop.ventas.queue

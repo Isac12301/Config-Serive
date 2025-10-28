@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://netcompany.database.windows.net:1433;database=BD_NetVentas;encrypt=true;trustServerCertificate=false;loginTimeout=30;
     username: netcompany
-    # DB_PASSWORD se inyecta como variable de entorno
+    # DB_PASSWORD se inyecta desde docker-compose
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
@@ -18,7 +18,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
   rabbitmq:
-    host: rabbitmq
+    host: rabbitmq # Usar el nombre del servicio de Docker Compose
     port: 5672
     username: guest
     password: guest
@@ -30,7 +30,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-rabbitmq: # Variables personalizadas para tus colas y bindings de RabbitMQ
+rabbitmq: # Variables personalizadas para tus colas
   exchange: netshop.exchange
   queue:
     ventas: netshop.ventas.queue

@@ -1,3 +1,5 @@
+# Nombre: api-gateway-docker.yml
+# El Config Server lo encontrará por "api-gateway" + profile "docker"
 server:
   port: 8080 # Puerto interno del Gateway dentro del contenedor
 
@@ -13,63 +15,59 @@ spring:
       routes:
         # Productos
         - id: productos-service
-          uri: lb://PRODUCTOS-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
+          uri: lb://PRODUCTOS-SERVICE
           predicates:
             - Path=/api/productos/**
           filters:
             - StripPrefix=2
 
-        # Categorias (Asumiendo que están en el mismo servicio de productos)
+        # Categorias
         - id: categorias-service
           uri: lb://PRODUCTOS-SERVICE
           predicates:
             - Path=/api/categorias/**
           filters:
-            - StripPrefix=2 # Elimina /api/categorias del path
+            - StripPrefix=2
 
-        # Identity - Autenticación manual (registro, login)
+        # Identity - Autenticación
         - id: identity-service-auth
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/auth/**
           filters:
-            - StripPrefix=1 # Elimina /auth del path
+            - StripPrefix=1
 
-        # Rutas OAuth2 (importante que se enruten correctamente al Identity Service)
-        - id: oauth2-authorization-google # Ruta para iniciar el flujo de Google OAuth2
+        # Rutas OAuth2
+        - id: oauth2-authorization-google
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/oauth2/authorization/google
           filters:
-            - StripPrefix=0 # Pasa la ruta tal cual al Identity Service
+            - StripPrefix=0
 
-        - id: oauth2-callback-google # Ruta para el callback de Google OAuth2
+        - id: oauth2-callback-google
           uri: lb://IDENTITY-SERVICE
           predicates:
             - Path=/login/oauth2/code/google
           filters:
-            - StripPrefix=0 # Pasa la ruta tal cual al Identity Service
+            - StripPrefix=0
 
         # Perfiles de Usuario
         - id: perfiles-usuario-service
-          uri: lb://USUARIO-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
+          uri: lb://USUARIO-SERVICE
           predicates:
             - Path=/api/perfiles-usuario/**
           filters:
-            - StripPrefix=2 # Elimina /api/perfiles-usuario del path
+            - StripPrefix=2
 
         # Ventas Service
         - id: ventas-service
-          uri: lb://VENTAS-SERVICE # Usar el nombre de servicio en MAYÚSCULAS para Eureka
+          uri: lb://VENTAS-SERVICE
           predicates:
             - Path=/api/ventas/**
           filters:
-            - StripPrefix=2 # Elimina /api/ventas del path
+            - StripPrefix=2
 
-jwt: # JWT_SECRET se inyecta como variable de entorno en docker-compose.yml
-  secret: "${JWT_SECRET}"
-  # Aquí puedes añadir expiration si no lo haces en identity-service o si necesitas una diferente para el gateway
-  # expiration: 3600 # Ejemplo: 1 hora
 eureka:
   client:
     service-url:
