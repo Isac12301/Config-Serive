@@ -17,12 +17,15 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.SQLServerDialect
+  jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${EXPIRATION}
+
   security:
     oauth2:
       client:
         registration:
           google:
-            # GOOGLE_CLIENT_ID y GOOGLE_CLIENT_SECRET se inyectan desde docker-compose
             scope:
               - openid
               - profile
@@ -43,7 +46,3 @@ eureka:
       defaultZone: http://eureka-server:8761/eureka
     register-with-eureka: true
     fetch-registry: true
-
-jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${EXPIRATION}
